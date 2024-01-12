@@ -1,13 +1,23 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
 .footer {
-  height: 200px;
+  position: relative;
+  font-family: Lemon;
+  min-height: 170px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #282c34;
+  background-color: #000;
   color: aliceblue;
+  bottom: 0;
+  width: 100%;
 }
 
 .footer span {
   font-weight: bold;
   color: #61dafb;
+  font-family: Lemon;
 }
