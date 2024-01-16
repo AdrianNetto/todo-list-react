@@ -26,3 +26,25 @@
   align-items: center;
   justify-content: center;
 }
+
+.actions i {
+  margin-bottom: .5em;
+  font-size: 1.2em;
+  cursor: pointer;
+  background-color: #282c34;
+  color: aliceblue;
+  padding: .4em;
+  transition: .4s;
+  border-radius: 5px;
+}
+
+.actions i:hover {
+  transition: .4s;
+  background-color: #fff;
+  color: #000;
+}
+
+.actions i:active {
+  transition: .4s;
+  transform: scale(.90)
+}

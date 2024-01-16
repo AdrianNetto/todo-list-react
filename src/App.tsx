@@ -22,7 +22,7 @@ function App() {
               setTaskList={setTaskList}
             />
           </div>
-          <div>
+          <div className="test">
             <h2>Suas tarefas: </h2>
             <TaskList taskList={taskList} />
           </div>
