@@ -1,65 +1,81 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import styles from "./TaskForm.module.css";
+
 import { ITask } from "../interfaces/Task";
+
+import styles from "./TaskForm.module.css";
 
 interface Props {
   btnText: string;
   taskList: ITask[];
-  setTaskList: React.Dispatch<React.SetStateAction<ITask[]>>;
+  setTaskList?: React.Dispatch<React.SetStateAction<ITask[]>>;
+  task?: ITask | null;
+  handleUpdate?(id: number, title: string, difficulty: number): void;
 }
 
-// ... (previous imports)
-
-const TaskForm = ({ btnText, taskList, setTaskList }: Props) => {
+const TaskForm = ({
+  btnText,
+  taskList,
+  setTaskList,
+  task,
+  handleUpdate,
+}: Props) => {
   const [id, setId] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
-  const [diff, setDiff] = useState<number>(0);
+  const [difficulty, setDifficulty] = useState<number>(0);
+
+  useEffect(() => {
+    if (task) {
+      setId(task.id);
+      setTitle(task.title);
+      setDifficulty(task.difficulty);
+    }
+  }, [task]);
 
   const addTaskHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const id = Math.floor(Math.random() * 1000);
+    if (handleUpdate) {
+      handleUpdate(id, title, difficulty)
+    } else {
+      const newId = Math.floor(Math.random() * 1000);
 
-    const newTask: ITask = { id, title, diff };
+      const newTask: ITask = { id: newId, title, difficulty };
 
-    setTaskList!([...taskList, newTask]);
+      setTaskList!([...taskList, newTask]);
 
-    setTitle("");
-    setDiff(0);
-
-    console.log(taskList);
+      setTitle("");
+      setDifficulty(0);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "title") {
       setTitle(e.target.value);
     } else {
-      setDiff(parseInt(e.target.value));
+      setDifficulty(parseInt(e.target.value) || 0);
     }
   };
 
   return (
     <form onSubmit={addTaskHandler} className={styles.form}>
       <div className={styles.input_container}>
-        <label htmlFor="title">Título: </label>
+        <label htmlFor="title">Título:</label>
         <input
           type="text"
           name="title"
           placeholder="Título da tarefa"
-          onChange={handleChange}
           value={title}
+          onChange={handleChange}
         />
       </div>
       <div className={styles.input_container}>
-        <label htmlFor="diff">Dificuldade:</label>
+        <label htmlFor="difficulty">Dificuldade:</label>
         <input
           type="number"
-          name="diff"
-          placeholder="Dificuldade da tarefa"
-          value={diff}
+          name="difficulty"
+          placeholder="Dificuldade da tarefa (1 a 5)"
+          value={difficulty}
           onChange={handleChange}
-          min="1"
-          max="10"
         />
       </div>
       <input type="submit" value={btnText} />

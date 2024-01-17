@@ -1,12 +1,14 @@
-import React from 'react'
-import { ITask } from '../interfaces/Task'
-import styles from './TaskList.module.css'
+import React from "react";
+import { ITask } from "../interfaces/Task";
+import styles from "./TaskList.module.css";
 
 interface Props {
-  taskList: ITask[]
+  taskList: ITask[];
+  handleDelete(id: number): void;
+  handleEdit(task: ITask): void
 }
 
-const TaskList = ({taskList}: Props) => {
+const TaskList = ({ taskList, handleDelete, handleEdit }: Props) => {
   return (
     <div className={styles.container}>
       {taskList.length > 0 ? (
@@ -14,11 +16,16 @@ const TaskList = ({taskList}: Props) => {
           <div key={task.id} className={styles.task}>
             <div className={styles.details}>
               <h4>{task.title}</h4>
-              <p>Dificuldade: {task.diff}</p>
+              <p>Dificuldade: {task.difficulty}</p>
             </div>
             <div className={styles.actions}>
-              <i className='bi bi-feather'></i>
-              <i className='bi bi-trash'></i>
+              <i className="bi bi-feather" onClick={() => handleEdit(task)}></i>
+              <i
+                className="bi bi-trash"
+                onClick={() => {
+                  handleDelete(task.id);
+                }}
+              ></i>
             </div>
           </div>
         ))
@@ -26,7 +33,7 @@ const TaskList = ({taskList}: Props) => {
         <p>Não há tarefas cadastradas</p>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default TaskList
+export default TaskList;
